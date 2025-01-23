@@ -1,95 +1,112 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import Editor from "@monaco-editor/react";
+import "./globals.css";
+
+export default function page() {
+  const [langDropdown, setLangDropdown] = useState(false); //language dropdown state
+  const [themeDropdown, setThemeDropdown] = useState(false); //theme dropdown state
+  const [editorTheme, setEditorTheme] = useState("vs-light"); //editor theme state
+  const [containerTheme, setContainerTheme] = useState("light"); //container theme state
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  const handleThemeChange = (theme) => { //handling theme state
+    if (theme === "Dark") {
+      setEditorTheme("hc-black");
+      setContainerTheme("dark");
+    } else {
+      setEditorTheme("vs-light");
+      setContainerTheme("light");
+    }
+    setThemeDropdown(false);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className={`text-editor-container ${
+      containerTheme === "dark" ? "dark-mode" : "" //checks if the theme is dark then it sets it to dark mode.
+    }`} 
+      onClick={() => {
+            if(langDropdown === true) {
+              setLangDropdown(false)
+            } else if (themeDropdown === true) {
+              setThemeDropdown(false);
+            }
+      }}
+    >
+      <div className="editor">
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+        <form action="#" onSubmit={handleSubmit}>
+
+          <div className="">
+
+            <Editor
+              theme={editorTheme} //Dynamic theme
+              height="65vh"
+              defaultLanguage="html"
+              defaultValue={`<html>
+  <head>
+    <title>HTML Sample</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style type="text/css">
+      h1 {
+        color: #CCA3A3;
+      }
+    </style>
+    <script type="text/javascript">
+      alert("I am a sample... visit devChallengs.io for more projects");
+    </script>
+  </head>
+  <body>
+    <h1>Heading No.1</h1>
+    <input disabled type="button" value="Click me" />
+  </body>
+</html>`}
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+          </div>
+          
+          <div className="buttonContainer">
+            <div className="btnGroup">
+
+              <div className="dropdown">
+                <button type="button" className="leftSideButton" onClick={() => {setLangDropdown(!langDropdown)}}>
+                  HTML
+                  <img src="/images/down arrow.svg" alt="" />
+                </button>
+                {langDropdown && (
+                  <div className="dropdownmenu">
+                    <div className="dropdownitem">JavaScript</div>
+                    <div className="dropdownitem">Python</div>
+                  </div>
+                )} 
+              </div>
+
+              <div className="dropdown">
+                <button type="button" className="leftSideButton" onClick={() => {setThemeDropdown(!themeDropdown)}}>
+                  {editorTheme === "hc-black"? "Dark": "Light"}
+                  <img src="/images/down arrow.svg" alt="" />
+                </button>
+                {themeDropdown && (
+                  <div className="dropdownmenu">
+                    <div className="dropdownitem" onClick={() => handleThemeChange("Light")}>Light</div>
+                    <div className="dropdownitem" onClick={() => handleThemeChange("Dark")}>Dark</div>
+                  </div>
+                )}
+              </div>
+
+              <button type="button" className="shareButton">
+                <img src="/images/Share.svg" alt="" />
+                Share
+              </button>
+
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

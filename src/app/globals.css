@@ -1,42 +1,141 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html, body {
+  background: radial-gradient(circle at 50% -70%, #E4E9FD 70%, #8c53ef 30%);
+  background-image: "/images/Hero-Background-notecode@2x.png";
+  min-height: 1000px;
+  font-family: 'helvetica neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.text-editor-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  /* margin-top: 100px; */
+  border: 1px solid white;
+  border-radius: 10px;
+  background-color: #FFFFFE;
+  height: 600px;
+  width: 1000px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.text-editor-container.dark-mode {
+  background-color: black; /* dark theme background */
+  color: white; /*change text color for dark mode */
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonContainer {
+  margin-top: 35px;
+}
+
+.btnGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.leftSideButton {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  background-color: #cacace;
+  border: none;
+  border-radius: 20px;
+  width: 90px;
+  height: 20px;
+  padding: 3px;
+  margin-top: 20px;
+  margin-left: 5px;
+}
+
+.shareButton {
+  justify-content: center;
+  gap: 7px;
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(74, 103, 233);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px;
+  margin-left: 64%;
+  width: 130px;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdownmenu {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: whitesmoke;
+  border: 1px solid #cacace;
+  border-radius: 8px;
+  padding: 10px 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 100%;
+}
+
+.dropdownitem {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdownitem:hover {
+  background-color: #cacace;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .text-editor-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    height: auto;
+    width: 93%;
+    padding: 15px;
   }
-}
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  .editor {
+    height: auto;
   }
+
+    .buttonContainer {
+      margin-top: 60px;
+    }
+  
+    .btnGroup {
+      margin: auto;
+      align-items: center;
+      flex-direction: column;
+      max-width: 0%;
+    }
+  
+    .leftSideButton,
+    .shareButton {
+      max-width: 300px;
+    }
+
+    .dropdownmenu {
+      width: 100%;
+    }
 }
