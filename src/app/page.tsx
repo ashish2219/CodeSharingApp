@@ -29,17 +29,14 @@ export default function page() {
   const defaultPython = `print("Hello World!");`;
 
 
-  const [langDropdown, setLangDropdown] = useState(false); //language dropdown state
-  const [themeDropdown, setThemeDropdown] = useState(false); //theme dropdown state
+  // const [langDropdown, setLangDropdown] = useState(false); //language dropdown state
+  // const [themeDropdown, setThemeDropdown] = useState(false); //theme dropdown state
   const [editorTheme, setEditorTheme] = useState("vs-light"); //editor theme state
   const [containerTheme, setContainerTheme] = useState("light"); //container theme state
   const [selectedLanguage, setSelectedLanguage] = useState("html"); //editor language state
   const [editorValue, setEditorValue] = useState(defaultHTML);
 
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
+
 
   const handleLanguageChange = (newLanguage) => {
     setSelectedLanguage(newLanguage);
@@ -51,18 +48,16 @@ export default function page() {
     } else if (newLanguage === "python") {
       setEditorValue(defaultPython);
     }
-    setLangDropdown(false);
   }
 
   const handleThemeChange = (theme) => { //handling theme state
-    if (theme === "Dark") {
+    if (theme === "hc-black") {
       setEditorTheme("hc-black"); //update editor theme
       setContainerTheme("dark"); //update container theme
     } else {
       setEditorTheme("vs-light");
       setContainerTheme("light");
     }
-    setThemeDropdown(false);
   };
 
   return (
@@ -75,7 +70,7 @@ export default function page() {
     </div>
 
     <div className={`text-editor-container ${
-      containerTheme === "dark" ? "dark-mode" : "" //checks if the theme is dark then it sets it to dark mode.
+      containerTheme === "dark" ? "dark-mode" : "" //checks if the (theme) value is dark then it sets it to dark mode.
     }`} 
       onClick={() => {
             if(langDropdown === true) {
@@ -87,7 +82,7 @@ export default function page() {
     >
       <div className="editor">
 
-        <form action="#" onSubmit={handleSubmit}>
+        <form action="#" onSubmit={(e) => e.preventDefault()}>
 
           <div className="">
 
@@ -105,6 +100,14 @@ export default function page() {
             <div className="btnGroup">
 
               <div className="dropdown">
+                <select className="leftSideButton" value={selectedLanguage} onChange={(e) => {handleLanguageChange(e.target.value)}}>
+                  <option value="html">HTML</option>
+                  <option value="javascript">JavaScript</option>
+                  <option value="python">Python</option>
+                </select>
+              </div>
+
+              {/* <div className="dropdown">
                 <button type="button" className="leftSideButton" onClick={() => {setLangDropdown(!langDropdown)}}>
                   {selectedLanguage === "html" ? "HTML"
                    : selectedLanguage === "javascript" ? "JavaScript"
@@ -119,9 +122,16 @@ export default function page() {
                     <div className="dropdownitem" onClick={() => handleLanguageChange("python")}>Python</div>
                   </div>
                 )} 
-              </div>
+              </div> */}
 
               <div className="dropdown">
+                <select className="leftSideButton" value={editorTheme} onChange={(e) => {handleThemeChange(e.target.value)}}>
+                  <option value="vs-light">Light</option>
+                  <option value="hc-black">Dark</option>
+                </select>
+              </div>
+
+              {/* <div className="dropdown">
                 <button type="button" className="leftSideButton" onClick={() => {setThemeDropdown(!themeDropdown)}}>
                   {editorTheme === "hc-black"? "Dark": "Light"}
                   <img src="/images/down arrow.svg" alt="" />
@@ -132,7 +142,7 @@ export default function page() {
                     <div className="dropdownitem" onClick={() => handleThemeChange("Dark")}>Dark</div>
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <button type="button" className="shareButton">
                 <img src="/images/Share.svg" alt="" />
