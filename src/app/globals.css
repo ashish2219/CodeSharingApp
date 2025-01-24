@@ -23,8 +23,18 @@ body {
   align-items: center;
 }
 
-.text-editor-container {
+.logo-container {
   margin: auto;
+  padding: 5px;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-editor-container {
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -45,7 +55,6 @@ body {
 
 .editor {
   display: flex;
-  flex-direction: column;
 }
 
 .buttonContainer {

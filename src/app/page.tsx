@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
@@ -26,6 +26,14 @@ export default function page() {
   };
 
   return (
+    <div>
+
+    <div className="logo-container">
+      <img src="/images/NoteCodeLogo.svg" alt="" />
+      <h2>Create {`&`} Share</h2>
+      <h1>Your Code easily</h1>
+    </div>
+
     <div className={`text-editor-container ${
       containerTheme === "dark" ? "dark-mode" : "" //checks if the theme is dark then it sets it to dark mode.
     }`} 
@@ -107,6 +115,7 @@ export default function page() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }
