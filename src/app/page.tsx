@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 import "./globals.css";
 
-export default function page() {
+export default function Page() {
   const defaultHTML = `<html>
   <head>
     <title>HTML Sample</title>
@@ -38,7 +38,7 @@ export default function page() {
 
 
 
-  const handleLanguageChange = (newLanguage) => {
+  const handleLanguageChange = (newLanguage: "html" | "javascript" | "python") => {
     setSelectedLanguage(newLanguage);
 
     if (newLanguage === "html") {
@@ -50,7 +50,7 @@ export default function page() {
     }
   }
 
-  const handleThemeChange = (theme) => { //handling theme state
+  const handleThemeChange = (theme: "hc-black" | "vs-light") => { //handling theme state
     if (theme === "hc-black") {
       setEditorTheme("hc-black"); //update editor theme
       setContainerTheme("dark"); //update container theme
@@ -72,13 +72,6 @@ export default function page() {
     <div className={`text-editor-container ${
       containerTheme === "dark" ? "dark-mode" : "" //checks if the (theme) value is dark then it sets it to dark mode.
     }`} 
-      onClick={() => {
-            if(langDropdown === true) {
-              setLangDropdown(false)
-            } else if (themeDropdown === true) {
-              setThemeDropdown(false);
-            }
-      }}
     >
       <div className="editor">
 
@@ -91,7 +84,11 @@ export default function page() {
               height="65vh"
               language={selectedLanguage}
               value={editorValue}
-              onChange={(newValue) => setEditorValue(newValue)} // 
+              onChange={(newValue) => {
+                if (newValue !== undefined) {
+                  setEditorValue(newValue);
+                }
+              }}
             />
 
           </div>
@@ -100,7 +97,9 @@ export default function page() {
             <div className="btnGroup">
 
               <div className="dropdown">
-                <select className="leftSideButton" value={selectedLanguage} onChange={(e) => {handleLanguageChange(e.target.value)}}>
+                <select className="leftSideButton" value={selectedLanguage} 
+                  onChange={(e) => {handleLanguageChange(e.target.value as "html" | "javascript" | "python")}}
+                >
                   <option value="html">HTML</option>
                   <option value="javascript">JavaScript</option>
                   <option value="python">Python</option>
@@ -125,7 +124,9 @@ export default function page() {
               </div> */}
 
               <div className="dropdown">
-                <select className="leftSideButton" value={editorTheme} onChange={(e) => {handleThemeChange(e.target.value)}}>
+                <select className="leftSideButton" value={editorTheme} 
+                  onChange={(e) => {handleThemeChange(e.target.value as "hc-black" | "vs-light")}}
+                >
                   <option value="vs-light">Light</option>
                   <option value="hc-black">Dark</option>
                 </select>

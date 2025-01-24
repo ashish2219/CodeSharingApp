@@ -1,21 +1,8 @@
-/* html, body {
-  background: radial-gradient(circle at 50% -70%, #E4E9FD 70%, #8c53ef 30%);
-  min-height: 1000px;
-  font-family: 'helvetica neue', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}  */
-
-html,
-body {
-  background: radial-gradient(circle at 50% -60%, transparent 70%, #8c53ef 30%),
-    url("/images/Hero-Background-notecode.svg");
-  background-size: 100% auto;
-  /* Adjust the size of the image */
+html, body {
+  background: radial-gradient(circle at 50% -60%, transparent 70%, #8c53ef 30%), url("/images/Hero-Background-notecode.svg");
+  background-size: 100% auto; /* Adjust the size of the image */
   background-repeat: no-repeat;
-  background-position: 50% -70%;
-  /* Position the image at the same place as the gradient circle */
+  background-position: 50% -70%; /* Position the image at the same place as the gradient circle */
   min-height: 1024px;
   font-family: 'helvetica neue', sans-serif;
   display: flex;
@@ -39,7 +26,6 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  /* margin-top: 100px; */
   border: 1px solid white;
   border-radius: 10px;
   background-color: #FFFFFE;
@@ -50,8 +36,8 @@ body {
 }
 
 .text-editor-container.dark-mode {
-  background-color: black; /* dark theme background */
-  color: white; /*change text color for dark mode */
+  background-color: black;
+  color: white; 
 }
 
 .editor {
