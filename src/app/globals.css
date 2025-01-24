@@ -34,6 +34,7 @@ body {
 }
 
 .text-editor-container {
+  border: 1px solid black;
   margin-top: auto;
   display: flex;
   flex-direction: column;
@@ -55,6 +56,7 @@ body {
 
 .editor {
   display: flex;
+  flex-direction: column;
 }
 
 .buttonContainer {
