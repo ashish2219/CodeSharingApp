@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Editor from "@monaco-editor/react";
 import "./globals.css";
@@ -34,6 +34,8 @@ export default function Page() {
   const [selectedLanguage, setSelectedLanguage] = useState("html"); //editor language state
   const [editorValue, setEditorValue] = useState(defaultHTML);
   const [inputData, setInputData] = useState(""); //handle input state
+  const [loading, setLoading] = useState(false); //handle saving animation loading state
+  const [isDataSaved, setIsDataSaved] = useState(false); //handle share button state
 
   // type CodeSnippet = {
   //   data: string;
@@ -46,11 +48,26 @@ export default function Page() {
 
   const [shareableLink, setShareableLink] = useState(""); //store shareable link
 
+  const defaultCodeSnippet = [defaultHTML, defaultJs, defaultPython];
+
+  useEffect(() => {
+    const trimmedInputData = inputData.trim(); // remove white spaces from the input data
+    const isDefaultCodeSnippet = defaultCodeSnippet.includes(trimmedInputData); // check if the input data is the default code snippet
+    if(!isDefaultCodeSnippet) {
+      setIsDataSaved(false); //enable share button
+    } else {
+      setIsDataSaved(true); //disable share button
+    }
+
+  }, [inputData]);
+
   const saveData = async () => {
     if(!inputData.trim()) {
       alert("Please enter a valid input");
       return;
     }
+
+    setLoading(true); //start loading animation
 
     const dataToSave = {  //data to be saved
       data: inputData,
@@ -59,22 +76,30 @@ export default function Page() {
       ContainerTheme: containerTheme,
     };
 
-    const response = await fetch("/api/saveData", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify( dataToSave ), // input data sent to the server
-    });
+    try{
+      const response = await fetch("/api/saveData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify( dataToSave ), // input data sent to the server
+      });
 
-    const result = await response.json();
-    if (response.ok && result.shareableLink) {
-      alert("Data saved successfully and link generated");
-      setShareableLink(result.shareableLink);
-    } else {
-      alert("something went wrong");
+      const result = await response.json();
+      if (response.ok && result.shareableLink) {
+        alert("Data saved successfully and link generated");
+        setShareableLink(result.shareableLink);
+        setIsDataSaved(true); //disable share button
+      } else {
+        alert("something went wrong");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false); //stop loading animation
     }
-  }
+  };
 
   // const fetchAllData = async () => {
   //   try {
@@ -197,13 +222,21 @@ export default function Page() {
                 {shareableLink ? "Click to copy link" : "No link available"}
               </button>
 
-              <button type="button" className={`shareButton ${!inputData.trim() ? "disabled" : ""}`} disabled={!inputData.trim()} 
+              <button type="button" className={`shareButton ${loading || isDataSaved || !inputData.trim() ? "disabled" : ""}`} disabled={loading || isDataSaved || !inputData.trim()} 
               onClick={async () => {
                 await saveData();
                 // await fetchAllData();
                 }}>
-                <img src="/images/Share.svg" alt="" />
-                Share
+                {loading ? (
+                  <>
+                    <img src="/images/loading.svg" width={50} height={26} alt="" />
+                  </>
+                ) : (
+                  <>
+                    <img src="/images/Share.svg" alt="" />
+                    Share
+                  </>
+                )}
               </button>
 
             </div>
