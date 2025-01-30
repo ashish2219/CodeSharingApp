@@ -31,7 +31,7 @@ export async function POST(req) {
         const collection = database.collection("code-snippets");
 
         const snippetId = uuidv4(); // generate a unique ID for the snippet
-        const shareableLink = `${process.env.NEXT_LOCAL_APP_URL}/view/${snippetId}`; // generate a shareable link for the snippet
+        const shareableLink = `${process.env.NEXT_PUBLIC_APP_URL}/view/${snippetId}`; // generate a shareable link for the snippet
 
         await collection.insertOne({ id: snippetId, data, language, theme, ContainerTheme }); // save the data to the database
 
