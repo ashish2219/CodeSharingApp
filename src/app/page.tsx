@@ -35,14 +35,14 @@ export default function Page() {
   const [editorValue, setEditorValue] = useState(defaultHTML);
   const [inputData, setInputData] = useState(""); //handle input state
 
-  type CodeSnippet = {
-    data: string;
-    theme: string;
-    language: string;
-    ContainerTheme: string;
-  }
+  // type CodeSnippet = {
+  //   data: string;
+  //   theme: string;
+  //   language: string;
+  //   ContainerTheme: string;
+  // }
 
-  const [allData, setAllData] = useState<CodeSnippet[]>([]); //store all data from db
+  // const [allData, setAllData] = useState<CodeSnippet[]>([]); //store all data from db
 
   const [shareableLink, setShareableLink] = useState(""); //store shareable link
 
@@ -69,39 +69,38 @@ export default function Page() {
 
     const result = await response.json();
     if (response.ok && result.shareableLink) {
-      alert("Data saved successfully");
-      alert(`Here is your shareable link: ${result.shareableLink}`);
+      alert("Data saved successfully and link generated");
       setShareableLink(result.shareableLink);
     } else {
       alert("something went wrong");
     }
   }
 
-  const fetchAllData = async () => {
-    try {
-      const response = await fetch("/api/getAllData"); //fetch data from the server
+  // const fetchAllData = async () => {
+  //   try {
+  //     const response = await fetch("/api/getAllData"); //fetch data from the server
 
-      if(response.ok) {
-        const fetchedData = await response.json();
-        setAllData(fetchedData); //store the fetched data
+  //     if(response.ok) {
+  //       const fetchedData = await response.json();
+  //       setAllData(fetchedData); //store the fetched data
 
-        allData.slice(-1).map((item) => {   //log the fetched data
-          setEditorValue(item.data); //send the fetched data to the editor
-          setEditorTheme(item.theme); //set the theme of the editor
-          setSelectedLanguage(item.language); //set the language of the editor
-          setContainerTheme(item.ContainerTheme); //set the container theme
-        });
+  //       allData.slice(-1).map((item) => {   //log the fetched data
+  //         setEditorValue(item.data); //send the fetched data to the editor
+  //         setEditorTheme(item.theme); //set the theme of the editor
+  //         setSelectedLanguage(item.language); //set the language of the editor
+  //         setContainerTheme(item.ContainerTheme); //set the container theme
+  //       });
 
-        console.log("Data fetched from db: ", fetchedData);
-        alert("Data fetched successfully");
-      } else { //if response is not ok
-        alert("Something went wrong");
-      }
-    } catch (error) {
-      console.error("Error: ", error);
-      alert("Something went wrong");
-    }
-  };
+  //       // console.log("Data fetched from db: ", fetchedData);
+  //       // alert("Data fetched successfully");
+  //     } else { //if response is not ok
+  //       alert("Something went wrong");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error: ", error);
+  //     alert("Something went wrong");
+  //   }
+  // };
 
 
 
@@ -201,7 +200,7 @@ export default function Page() {
               <button type="button" className={`shareButton ${!inputData.trim() ? "disabled" : ""}`} disabled={!inputData.trim()} 
               onClick={async () => {
                 await saveData();
-                await fetchAllData();
+                // await fetchAllData();
                 }}>
                 <img src="/images/Share.svg" alt="" />
                 Share
