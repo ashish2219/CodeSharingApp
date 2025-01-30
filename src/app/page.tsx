@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Editor from "@monaco-editor/react";
 import "./globals.css";
-import { useRouter } from "next/router";
 
 export default function Page() {
   const defaultHTML = `<html>
@@ -35,7 +34,16 @@ export default function Page() {
   const [selectedLanguage, setSelectedLanguage] = useState("html"); //editor language state
   const [editorValue, setEditorValue] = useState(defaultHTML);
   const [inputData, setInputData] = useState(""); //handle input state
-  const [allData, setAllData] = useState([]); //store all data from db
+
+  type CodeSnippet = {
+    data: string;
+    theme: string;
+    language: string;
+    ContainerTheme: string;
+  }
+
+  const [allData, setAllData] = useState<CodeSnippet[]>([]); //store all data from db
+
   const [shareableLink, setShareableLink] = useState(""); //store shareable link
 
   const saveData = async () => {
@@ -77,7 +85,7 @@ export default function Page() {
         const fetchedData = await response.json();
         setAllData(fetchedData); //store the fetched data
 
-        allData.slice(-1).map((item, index) => {   //log the fetched data
+        allData.slice(-1).map((item) => {   //log the fetched data
           setEditorValue(item.data); //send the fetched data to the editor
           setEditorTheme(item.theme); //set the theme of the editor
           setSelectedLanguage(item.language); //set the language of the editor

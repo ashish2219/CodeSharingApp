@@ -31,7 +31,7 @@ export async function POST(req) {
         const collection = database.collection("code-snippets");
 
         const snippetId = uuidv4(); // generate a unique ID for the snippet
-        const shareableLink = `${process.env.NEXT_PUBLIC_APP_URL}/view/${snippetId}`; // generate a shareable link for the snippet
+        const shareableLink = `${process.env.NEXT_LOCAL_APP_URL}/view/${snippetId}`; // generate a shareable link for the snippet
 
         await collection.insertOne({ id: snippetId, data, language, theme, ContainerTheme }); // save the data to the database
 
@@ -44,12 +44,12 @@ export async function POST(req) {
         }); // return a success response if the data is saved successfully
     } catch (error) {
         console.error("Error: ", error);
-        return {
+        return new Response(JSON.stringify({message: "Internal server error"}), {
             status: 500,
-            body: {
-                message: "Internal Server Error"
+            headers: {
+                "Content-Type": "application/json"
             }
-        };
+        }); // return an error response if an error occurs
     } finally {
         if (client) {
             await client.close();

@@ -14,8 +14,6 @@ export default function SharedSnippet() {
     const [selectedLanguage, setSelectedLanguage] = useState("html");
     const [editorTheme, setEditorTheme] = useState("vs-light");
     const [containerTheme, setContainerTheme] = useState("light");
-    const [inputData, setInputData] = useState(""); //handle input state
-    const [allData, setAllData] = useState([]); //store all data from db
     
 
     const router = useRouter();
@@ -85,9 +83,7 @@ export default function SharedSnippet() {
                 <div className="sharedBtnGroup">
     
                   <div className="dropdown">
-                    <select disabled className="leftSideButton" value={selectedLanguage} 
-                      onChange={(e) => {handleLanguageChange(e.target.value as "html" | "javascript" | "python")}}
-                    >
+                    <select disabled className="leftSideButton" value={selectedLanguage}>
                       <option value="html">HTML</option>
                       <option value="javascript">JavaScript</option>
                       <option value="python">Python</option>
@@ -95,36 +91,6 @@ export default function SharedSnippet() {
                   </div>
 
                   <button className="homeButton" onClick={homeButton}>Create and Share Your Code</button>
-    
-                {/*  <div className="dropdown">
-                    <select disabled className="leftSideButton" value={editorTheme} 
-                      onChange={(e) => {handleThemeChange(e.target.value as "hc-black" | "vs-light")}}
-                    >
-                      <option value="vs-light">Light</option>
-                      <option value="hc-black">Dark</option>
-                    </select>
-                  </div> */}
-{/* 
-                  <button disabled type="button" className="linkButton disabled" onClick={() => {
-                    navigator.clipboard.writeText("").then(() => {
-                      alert("Link copied to clipboard");
-                    }).catch(err => {
-                      console.error("Error: ", err);
-                      alert("Failed to copy link to clipboard");
-                    });
-                  }}>
-                    <Image src="/images/link.svg" height={20} width={40} alt="" />
-                    
-                  </button>
-    
-                  <button type="button" className={`shareButton ${!inputData.trim() ? "disabled" : ""}`} disabled={!inputData.trim()} 
-                  onClick={async () => {
-                    await saveData();
-                    await fetchAllData();
-                    }}>
-                    <img src="/images/Share.svg" alt="" />
-                    Share
-                  </button> */}
     
                 </div>
               </div>
