@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Editor from "@monaco-editor/react";
 import "./globals.css";
+import { useRouter } from "next/router";
 
 export default function Page() {
   const defaultHTML = `<html>
@@ -28,13 +30,70 @@ export default function Page() {
 
   const defaultPython = `print("Hello World!");`;
 
-
-  // const [langDropdown, setLangDropdown] = useState(false); //language dropdown state
-  // const [themeDropdown, setThemeDropdown] = useState(false); //theme dropdown state
   const [editorTheme, setEditorTheme] = useState("vs-light"); //editor theme state
   const [containerTheme, setContainerTheme] = useState("light"); //container theme state
   const [selectedLanguage, setSelectedLanguage] = useState("html"); //editor language state
   const [editorValue, setEditorValue] = useState(defaultHTML);
+  const [inputData, setInputData] = useState(""); //handle input state
+  const [allData, setAllData] = useState([]); //store all data from db
+  const [shareableLink, setShareableLink] = useState(""); //store shareable link
+
+  const saveData = async () => {
+    if(!inputData.trim()) {
+      alert("Please enter a valid input");
+      return;
+    }
+
+    const dataToSave = {  //data to be saved
+      data: inputData,
+      language: selectedLanguage,
+      theme: editorTheme,
+      ContainerTheme: containerTheme,
+    };
+
+    const response = await fetch("/api/saveData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify( dataToSave ), // input data sent to the server
+    });
+
+    const result = await response.json();
+    if (response.ok && result.shareableLink) {
+      alert("Data saved successfully");
+      alert(`Here is your shareable link: ${result.shareableLink}`);
+      setShareableLink(result.shareableLink);
+    } else {
+      alert("something went wrong");
+    }
+  }
+
+  const fetchAllData = async () => {
+    try {
+      const response = await fetch("/api/getAllData"); //fetch data from the server
+
+      if(response.ok) {
+        const fetchedData = await response.json();
+        setAllData(fetchedData); //store the fetched data
+
+        allData.slice(-1).map((item, index) => {   //log the fetched data
+          setEditorValue(item.data); //send the fetched data to the editor
+          setEditorTheme(item.theme); //set the theme of the editor
+          setSelectedLanguage(item.language); //set the language of the editor
+          setContainerTheme(item.ContainerTheme); //set the container theme
+        });
+
+        console.log("Data fetched from db: ", fetchedData);
+        alert("Data fetched successfully");
+      } else { //if response is not ok
+        alert("Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Something went wrong");
+    }
+  };
 
 
 
@@ -60,11 +119,13 @@ export default function Page() {
     }
   };
 
+
+
   return (
     <div>
 
     <div className="logo-container">
-      <img src="/images/NoteCodeLogo.svg" alt="logo" />
+      <Image src="/images/NoteCodeLogo.svg" alt="logo" height={30} width={100} />
       <h2>Create {`&`} Share</h2>
       <h1>Your Code easily</h1>
     </div>
@@ -79,14 +140,14 @@ export default function Page() {
 
           <div className="">
 
-            <Editor
+            <Editor       // Monaco Editor component
               theme={editorTheme} //Dynamic theme
               height="65vh"
               language={selectedLanguage}
               value={editorValue}
               onChange={(newValue) => {
                 if (newValue !== undefined) {
-                  setEditorValue(newValue);
+                  setInputData(newValue);
                 }
               }}
             />
@@ -106,23 +167,6 @@ export default function Page() {
                 </select>
               </div>
 
-              {/* <div className="dropdown">
-                <button type="button" className="leftSideButton" onClick={() => {setLangDropdown(!langDropdown)}}>
-                  {selectedLanguage === "html" ? "HTML"
-                   : selectedLanguage === "javascript" ? "JavaScript"
-                   : "Python"
-                  }
-                  <img src="/images/down arrow.svg" alt="" />
-                </button>
-                {langDropdown && (
-                  <div className="dropdownmenu">
-                    <div className="dropdownitem" onClick={() => handleLanguageChange("html")}>HTML</div>
-                    <div className="dropdownitem" onClick={() => handleLanguageChange("javascript")}>JavaScript</div>
-                    <div className="dropdownitem" onClick={() => handleLanguageChange("python")}>Python</div>
-                  </div>
-                )} 
-              </div> */}
-
               <div className="dropdown">
                 <select className="leftSideButton" value={editorTheme} 
                   onChange={(e) => {handleThemeChange(e.target.value as "hc-black" | "vs-light")}}
@@ -132,20 +176,25 @@ export default function Page() {
                 </select>
               </div>
 
-              {/* <div className="dropdown">
-                <button type="button" className="leftSideButton" onClick={() => {setThemeDropdown(!themeDropdown)}}>
-                  {editorTheme === "hc-black"? "Dark": "Light"}
-                  <img src="/images/down arrow.svg" alt="" />
-                </button>
-                {themeDropdown && (
-                  <div className="dropdownmenu">
-                    <div className="dropdownitem" onClick={() => handleThemeChange("Light")}>Light</div>
-                    <div className="dropdownitem" onClick={() => handleThemeChange("Dark")}>Dark</div>
-                  </div>
-                )}
-              </div> */}
+              <button type="button"  className={`linkButton ${!shareableLink ? "disabled" : ""}`} onClick={() => {
+                  navigator.clipboard.writeText(shareableLink).then(() => {
+                    alert("Link copied to clipboard");
+                  }).catch(err => {
+                    console.error("Error: ", err);
+                    alert("Failed to copy link to clipboard");
+                  });
+                }} 
+                disabled={!shareableLink}
+              >
+                <Image src="/images/link.svg" height={20} width={40} alt="" />
+                {shareableLink ? "Click to copy link" : "No link available"}
+              </button>
 
-              <button type="button" className="shareButton">
+              <button type="button" className={`shareButton ${!inputData.trim() ? "disabled" : ""}`} disabled={!inputData.trim()} 
+              onClick={async () => {
+                await saveData();
+                await fetchAllData();
+                }}>
                 <img src="/images/Share.svg" alt="" />
                 Share
               </button>

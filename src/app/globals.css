@@ -13,7 +13,6 @@ html, body {
 .logo-container {
   margin: auto;
   padding: 5px;
-  z-index: 1;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -29,7 +28,7 @@ html, body {
   border: 1px solid white;
   border-radius: 10px;
   background-color: #FFFFFE;
-  height: 600px;
+  height: 605px;
   width: 1000px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   transition: background-color 0.05s ease, color 0.05s ease;
@@ -49,10 +48,24 @@ html, body {
   margin-top: 35px;
 }
 
+.sharedButtonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 .btnGroup {
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+.sharedBtnGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 650px;
 }
 
 .leftSideButton {
@@ -64,10 +77,36 @@ html, body {
   border: none;
   border-radius: 20px;
   width: 90px;
-  height: 20px;
+  height: auto;
   padding: 3px;
   margin-top: 20px;
   margin-left: 5px;
+}
+
+.linkButton {
+  color: #888889;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  background-color: whitesmoke;
+  border: none;
+  border-radius: 20px;
+  width: 160px;
+  height: 20px;
+  padding: 3px;
+  margin-top: 15px;
+  margin-left: 45%;
+}
+
+.linkButton.disabled {
+  background-color: #cacace;
+  cursor: not-allowed;
+}
+
+.linkButton:hover {
+  background-color: #cacace;
 }
 
 .shareButton {
@@ -82,10 +121,40 @@ html, body {
   border-radius: 20px;
   cursor: pointer;
   padding: 10px;
-  margin-left: 64%;
+  margin-left: 0%;
   width: 130px;
   font-weight: bold;
   font-size: 17px;
+}
+
+.shareButton:hover {
+  background-color: rgb(26, 62, 220);
+}
+
+.shareButton.disabled {
+  background-color: #cacace;
+  cursor: not-allowed;
+}
+
+.homeButton {
+  background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 15px 25px; /* Some padding */
+    text-align: center; /* Centered text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the button inline-block */
+    font-size: 14px; /* Increase font size */
+    margin: 1px 1px; /* Some margin */
+    cursor: pointer; /* Pointer/hand icon */
+    border-radius: 30px; /* Rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Box shadow */
+    transition: background-color 0.3s ease, box-shadow
+}
+
+.homeButton:hover {
+  background-color: #45a049;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 40px 0 rgba(0, 0, 0, 0.19); /* Larger box shadow on hover */
 }
 
 .dropdown {
@@ -129,6 +198,19 @@ html, body {
 
   .editor {
     height: auto;
+  }
+  .sharedButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .sharedBtnGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
     .buttonContainer {
